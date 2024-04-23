@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +8,11 @@
 </head>
 <body>
   <div class="container">
-    <div draggable="true" class="box">A</div>
-    <div draggable="true" class="box">B</div>
-    <div draggable="true" class="box">C</div>
+    <div draggable="true" class="box" onclick="balance1.bal = 1;">A</div>
+    <div draggable="true" class="box" onclick="balance1.bal = 0;">B</div>
+    <div draggable="true" class="box" onclick="balance1.bal = -1;">C</div>
   </div>
-  <canvas id="canvas" width="600" height="600"></canvas>
+  <canvas id="canvas" width="800" height="600"></canvas>
   <script src="script.js"></script>
   <script src="space.js"></script>
 </body>
