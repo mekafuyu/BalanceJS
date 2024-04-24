@@ -19,3 +19,10 @@ body{
 .box.over {
   border: 3px dotted #666;
 }
+
+.cont-canvas {
+  display: flex;
+  justify-content: center;
+}
+#canvas {
+}

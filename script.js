@@ -11,7 +11,7 @@
 //   item.addEventListener('dragstart', handleDragStart);
 //   item.addEventListener('dragend', handleDragEnd);
 // });
-
+var teste1 = 0
 document.addEventListener('DOMContentLoaded', (event) => {
 
   function handleDragStart(e) {
@@ -56,7 +56,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }
 
   let items = document.querySelectorAll('.container .box');
-  console.log(items)
   items.forEach(function(item) {
     item.addEventListener('dragstart', handleDragStart);
     item.addEventListener('dragover', handleDragOver);

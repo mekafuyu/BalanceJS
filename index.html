@@ -8,12 +8,14 @@
 </head>
 <body>
   <div class="container">
-    <div draggable="true" class="box" onclick="balance1.bal = 1;">A</div>
-    <div draggable="true" class="box" onclick="balance1.bal = 0; altgrav = 200">B</div>
-    <div draggable="true" class="box" onclick="balance1.bal = -1; altgrav = 200">C</div>
+    <div draggable="true" class="box" onclick="tiltLeft()">A</div>
+    <div draggable="true" class="box" onclick="unTilt()">B</div>
+    <div draggable="true" class="box" onclick="tiltRight()">C</div>
   </div>
-  <canvas id="canvas" width="800" height="600"></canvas>
+  <div class="cont-canvas">
+    <canvas id="canvas" width="100" height="600"></canvas>
+  </div>
   <script src="script.js"></script>
-  <script src="space.js"></script>
+  <script type="module" src="canvas.js"></script>
 </body>
 </html>
