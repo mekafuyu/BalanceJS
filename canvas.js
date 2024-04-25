@@ -6,77 +6,55 @@ import {
   renderSquare,
 } from "./balance.js";
 
-// TODO FIX RESPONSIVE PLACING BALL
-
 const canvas = document.getElementById("canvas");
-window.addEventListener("resize", resizeCanvas, false);
 var balance1 = new Balance(0, 0);
 var balance2 = new Balance(0, 0);
 var balX1 = width / 2;
 var balX2 = 200 * scale;
 var balY = height / 3;
-
-window.tiltRight = () => {
-  balance1.bal = 1;
-};
-window.unTilt = () => {
-  balance1.bal = 0;
-};
-window.tiltLeft = () => {
-  balance1.bal = -1;
-};
-
 var cursor = { x: 0, y: 0 };
-
-// var plate1 = [
-//   new Gravitable(20, 20, 10, 10, renderBall),
-//   new Gravitable(50, 40, 10, 10, renderBall),
-//   new Gravitable(0, -60, 10, 10, renderSquare),
-//   new Gravitable(20, -80, 10, 10, renderSquare),
-// ];
-// var plate2 = [
-//   new Gravitable(30, 10, 10, 10, renderBall),
-//   new Gravitable(20, 30, 10, 10, renderBall),
-//   new Gravitable(10, -20, 10, 10, renderSquare),
-//   new Gravitable(40, 0, 10, 10, renderSquare),
-// ];
-// balance1.leftPlate = plate1;
-// balance1.rightPlate = plate2;
-// balance2.leftPlate = plate1;
-// balance2.rightPlate = plate2;
-
 var width = window.innerWidth - 50;
 var height = window.innerHeight - 100;
-var scale = width;
+var scale = width / 750;
 var offX = 0;
+var plate1Off = balX1 - balX2
+var plate2Off = balX1 + balX2
+var figCount = 0
+
 function getCursorPosition(canvas, event) {
   const rect = canvas.getBoundingClientRect();
   cursor.x = event.clientX - rect.left;
   cursor.y = event.clientY - rect.top;
 
-  if (cursor.x < width / 6)
-    balance1.leftPlate.push(
-      new Gravitable(cursor.x, cursor.y - 200 * scale, 10, 10, renderBall)
-    );
-  else if (cursor.x > width / 3 && cursor.x < width / 2)
-    balance1.rightPlate.push(
-      new Gravitable(cursor.x - 300, cursor.y - 200 * scale, 10, 10, renderBall)
-    );
-  else if (cursor.x > width / 2 && cursor.x < width * 2 / 3)
-    balance2.leftPlate.push(
-      new Gravitable(cursor.x - 550, cursor.y - 200 * scale, 10, 10, renderBall)
-    );
-  else if (cursor.x > width * 5 / 6)
-    balance2.rightPlate.push(
-      new Gravitable(cursor.x - 850, cursor.y - 200 * scale, 10, 10, renderBall)
-    );
-}
-canvas.addEventListener("mousemove", function (e) {
-  getCursorPosition(canvas, e);
-});
+  if (cursor.x < width / 2)
+  {
+    var pos1 = balance1.currPos / 2;
+    var tilt1x = ((Math.abs(pos1) * 50) * scale)
+    var tilt1y = pos1 * 75;
 
-function init() {
-  window.requestAnimationFrame(draw);
+    if (cursor.x < width / 6)
+      balance1.leftPlate.push(
+        new Gravitable(cursor.x - (plate1Off + offX - 50 * scale + tilt1x), cursor.y + (-210 + tilt1y) * scale, 10, 10, renderBall)
+      );
+    else if (cursor.x > width / 3)
+      balance1.rightPlate.push(
+        new Gravitable(cursor.x - (plate1Off - offX - 50 * scale - tilt1x), cursor.y - (210 + tilt1y) * scale, 10, 10, renderSquare)
+      );
+  }
+  else{
+    var pos2 = balance2.currPos / 2;
+    var tilt2x = ((Math.abs(pos2) * 50) * scale)
+    var tilt2y = pos2 * 75;
+
+    if (cursor.x < width * 2 / 3)
+      balance2.leftPlate.push(
+        new Gravitable(cursor.x - (plate2Off + offX - 50 * scale + tilt2x), cursor.y + (-210 + tilt2y) * scale, 10, 10, renderBall)
+      );
+    else if (cursor.x > width * 5 / 6)
+      balance2.rightPlate.push(
+        new Gravitable(cursor.x - (plate2Off - offX - 50 * scale + tilt2y), cursor.y - (210 + tilt2y) * scale, 10, 10, renderBall)
+      );
+  }
 }
 
 function resizeCanvas() {
@@ -90,6 +68,17 @@ function resizeCanvas() {
   balX1 = width / 2;
   balX2 = 200 * scale;
   balY = height / 3;
+  plate1Off = balX1 - balX2 
+  plate2Off = balX1 + balX2 
+}
+window.addEventListener("resize", resizeCanvas, false);
+canvas.addEventListener("mousemove", function (e) {
+  getCursorPosition(canvas, e);
+  figCount++
+});
+
+function init() {
+  window.requestAnimationFrame(draw);
 }
 
 function draw() {
@@ -101,19 +90,15 @@ function draw() {
   ctx.strokeStyle = "darkgoldenrod";
   
   
-  renderBalance(ctx, balX1 - balX2, balY, scale, balance1);
-  renderBalance(ctx, balX1 + balX2, balY, scale, balance2);
+  renderBalance(ctx, plate1Off, balY, scale, balance1);
+  renderBalance(ctx, plate2Off, balY, scale, balance2);
 
   ctx.font = "20px arial";
   ctx.fillText(cursor.x, 10, 20);
   ctx.fillText(cursor.y, 10, 40);
-  ctx.fillText(balX1 - balX2 + offX, 10, 60);
-  
-  ctx.beginPath();
-  ctx.arc(balX1 - balX2 + offX, 100, 10 * scale, 0, 2 * Math.PI);
-  ctx.fill();
-  
-  // gravity(ctx, 10, 10, 400, altgrav, gravity1)
+  ctx.fillText(plate1Off + (offX - 50 * scale), 10, 60);
+  ctx.fillText(plate2Off - (offX + 50 * scale), 10, 80);
+  ctx.fillText(figCount, 10, 100);
 
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -122,3 +107,13 @@ function draw() {
 
 resizeCanvas();
 init();
+
+window.tiltRight = () => {
+  balance1.bal = 1;
+};
+window.unTilt = () => {
+  balance1.bal = 0;
+};
+window.tiltLeft = () => {
+  balance1.bal = -1;
+};

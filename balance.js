@@ -177,8 +177,8 @@ export function renderBalance(ctx, x, y, scale, balance) {
   // LEFT PLATE
   renderPlate(
     ctx,
-    (0 + xOffSet) * scale,
-    (0 + 50 - yOffSet) * scale,
+    xOffSet * scale,
+    (50 - yOffSet) * scale,
     plateSize,
     balance.leftPlate,
     bs
